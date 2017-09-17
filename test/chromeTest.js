@@ -16,7 +16,7 @@ describe('chrome pdf', () => {
 
   it('should not fail when rendering', async () => {
     const request = {
-      template: { content: 'Heyx', recipe: 'phantom-pdf', engine: 'none' }
+      template: { content: 'Heyx', recipe: 'chrome-pdf', engine: 'none' }
     }
 
     const res = await reporter.render(request, {})
@@ -25,7 +25,7 @@ describe('chrome pdf', () => {
 
   it('should provide logs', async () => {
     const request = {
-      template: { content: 'Heyx <script>console.log("hello world")</script>', recipe: 'phantom-pdf', engine: 'none' },
+      template: { content: 'Heyx <script>console.log("hello world")</script>', recipe: 'chrome-pdf', engine: 'none' },
       options: { debug: { logsToResponseHeader: true } }
     }
 
