@@ -29,6 +29,7 @@
       "browser": true
     }
   },
+  "engines" : { "node" : ">=8.0.0" },
   "license": "MIT",
   "dependencies": {
     "puppeteer": "0.10.2",
