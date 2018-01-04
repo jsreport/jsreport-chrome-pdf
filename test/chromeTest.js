@@ -1,22 +1,34 @@
-const path = require('path')
-const Reporter = require('jsreport-core').Reporter
-
+const JsReport = require('jsreport-core')
 require('should')
 
 describe('chrome pdf', () => {
   var reporter
 
   beforeEach(() => {
-    reporter = new Reporter({
-      rootDirectory: path.join(__dirname, '../')
+    reporter = JsReport({
+      tasks: {
+        strategy: 'in-process'
+      }
     })
+    reporter.use(require('../')())
+    reporter.use(require('jsreport-debug')())
 
     return reporter.init()
   })
 
   it('should not fail when rendering', async () => {
     const request = {
-      template: { content: 'Heyx', recipe: 'chrome-pdf', engine: 'none' }
+      template: { content: 'Foo', recipe: 'chrome-pdf', engine: 'none' }
+    }
+
+    const res = await reporter.render(request, {})
+    res.content.toString().should.containEql('%PDF')
+    require('fs').writeFileSync('ccontent.pdf', res.content)
+  })
+
+  it('should not fail when rendering header', async () => {
+    const request = {
+      template: { content: 'Heyx', recipe: 'chrome-pdf', engine: 'none', chrome: { header: 'Foo' } }
     }
 
     const res = await reporter.render(request, {})

@@ -29,25 +29,27 @@
       "browser": true
     }
   },
-  "engines" : { "node" : ">=8.0.0" },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "0.10.2",
+    "puppeteer": "0.13.0",
     "uuid": "3.1.0"
   },
   "author": "Jan Blaha",
   "devDependencies": {
-    "babel-eslint": "8.0.0",
-    "eslint": "4.7.0",
+    "babel-eslint": "8.1.2",
+    "eslint": "4.14.0",
     "eslint-config-standard-jsx": "4.0.2",
     "eslint-plugin-babel": "4.1.2",
     "in-publish": "2.0.0",
-    "jsreport-core": "1.4.0",
-    "jsreport-debug": "1.0.5",
-    "jsreport-studio-dev": "1.1.1",
-    "jsreport-templates": "1.1.1",
-    "mocha": "3.5.3",
-    "should": "13.0.1",
+    "jsreport-core": "1.5.1",
+    "jsreport-debug": "1.1.0",
+    "jsreport-studio-dev": "1.1.2",
+    "jsreport-templates": "1.2.2",
+    "mocha": "4.1.0",
+    "should": "13.2.0",
     "standard": "10.0.3"
   },
   "files": [

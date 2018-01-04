@@ -1,6 +1,18 @@
 import React, { Component } from 'react'
+import Studio from 'jsreport-studio'
+import * as Constants from './constants.js'
 
 export default class Properties extends Component {
+  openHeaderFooter (type) {
+    Studio.openTab({
+      key: this.props.entity._id + 'chrome' + type,
+      _id: this.props.entity._id,
+      headerOrFooter: type,
+      editorComponentKey: Constants.CHROME_TAB_EDITOR,
+      titleComponentKey: Constants.CHROME_TAB_TITLE
+    })
+  }
+
   render () {
     const { entity, onChange } = this.props
     const chrome = entity.chrome || {}
@@ -71,6 +83,22 @@ export default class Properties extends Component {
           <input
             type='text' placeholder='10cm' value={chrome.marginLeft || ''}
             onChange={(v) => changeChrome({ marginLeft: v.target.value })} />
+        </div>
+        {/*
+        <div className='form-group'>
+          <label>header</label>
+          <button onClick={() => this.openHeaderFooter('header')}>open in tab...</button>
+        </div>
+        <div className='form-group'>
+          <label>footer</label>
+          <button onClick={() => this.openHeaderFooter('footer')}>open in tab...</button>
+        </div>
+        */}
+        <div className='form-group'>
+          <label>wait for network iddle</label>
+          <input
+            type='checkbox' checked={chrome.waitForNetworkIddle === true}
+            onChange={(v) => changeChrome({ waitForNetworkIddle: v.target.checked })} />
         </div>
         <div className='form-group'>
           <label title='window.JSREPORT_READY_TO_START=true;'>wait for printing trigger</label>
