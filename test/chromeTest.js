@@ -23,7 +23,6 @@ describe('chrome pdf', () => {
 
     const res = await reporter.render(request, {})
     res.content.toString().should.containEql('%PDF')
-    require('fs').writeFileSync('ccontent.pdf', res.content)
   })
 
   it('should not fail when rendering header', async () => {
