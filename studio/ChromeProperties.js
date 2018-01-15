@@ -84,7 +84,6 @@ export default class Properties extends Component {
             type='text' placeholder='10cm' value={chrome.marginLeft || ''}
             onChange={(v) => changeChrome({ marginLeft: v.target.value })} />
         </div>
-        {/*
         <div className='form-group'>
           <label>header</label>
           <button onClick={() => this.openHeaderFooter('header')}>open in tab...</button>
@@ -93,7 +92,6 @@ export default class Properties extends Component {
           <label>footer</label>
           <button onClick={() => this.openHeaderFooter('footer')}>open in tab...</button>
         </div>
-        */}
         <div className='form-group'>
           <label>wait for network iddle</label>
           <input
