@@ -10,7 +10,11 @@ describe('chrome pdf', () => {
         strategy: 'in-process'
       }
     })
-    reporter.use(require('../')())
+    reporter.use(require('../')({
+      launchOptions: {
+        args: ['--no-sandbox']
+      }
+    }))
     reporter.use(require('jsreport-debug')())
 
     return reporter.init()
