@@ -15,7 +15,6 @@ describe('chrome pdf', () => {
         args: ['--no-sandbox']
       }
     }))
-    reporter.use(require('jsreport-debug')())
 
     return reporter.init()
   })
@@ -44,7 +43,7 @@ describe('chrome pdf', () => {
       options: { debug: { logsToResponseHeader: true } }
     }
 
-    const res = await reporter.render(request, {})
-    res.headers['Debug-Logs'].should.match(/hello world/)
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/hello world/)
   })
 })

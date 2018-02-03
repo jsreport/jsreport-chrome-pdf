@@ -30,7 +30,8 @@ node_modules
 
 .idea
 
-studio/main.js
+# temporary include
+# studio/main.js
 studio/main.js.map
 
 # jsreport files
