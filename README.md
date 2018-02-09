@@ -32,4 +32,4 @@ jsreport.use(require('jsreport-chrome-pdf')())
 
 #### Table with a lot of rows never finish rendering
 
-When rendering a table with a lot of rows (>4000) chrome can hang if the html contains a 5 level of tab indentation in the source, the fix for this is to keep the tab indentation bellow 4 levels. you can take a look at the problem [here](https://playground.jsreport.net/studio/workspace/ByLeJOiIM/4) and see how it is fixed by just updating the indentation [here](https://playground.jsreport.net/studio/workspace/rkvURPi8z/4).
+When rendering a table with a lot of rows (>4000) chrome can hang if the html contains a 5 level of tab indentation in the source, the fix for this is to keep the tab indentation bellow 4 levels. you can take a look at the problem [here](https://playground.jsreport.net/studio/workspace/ByLeJOiIM/7) and see how it is fixed by just updating the indentation [here](https://playground.jsreport.net/studio/workspace/rkvURPi8z/7).
