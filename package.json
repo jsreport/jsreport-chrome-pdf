@@ -34,8 +34,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "archiver": "2.1.1",
     "puppeteer": "1.0.0",
-    "uuid": "3.2.1"
+    "uuid": "3.2.1",
+    "yauzl": "2.9.1"
   },
   "author": "Jan Blaha",
   "devDependencies": {
