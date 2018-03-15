@@ -517,7 +517,7 @@
 	      return _react2.default.createElement(_jsreportStudio.TextEditor, {
 	        name: entity._id + '_chrome' + tab.headerOrFooter,
 	        mode: 'handlebars',
-	        value: entity.chrome ? entity.chrome[tab.headerOrFooter] : '',
+	        value: entity.chrome ? entity.chrome[tab.headerOrFooter + 'Template'] : '',
 	        onUpdate: function onUpdate(v) {
 	          return _onUpdate(Object.assign({}, entity, { chrome: Object.assign({}, entity.chrome, _defineProperty({}, tab.headerOrFooter + 'Template', v)) }));
 	        }
