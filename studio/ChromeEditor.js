@@ -9,7 +9,7 @@ export default class ChromeEditor extends Component {
       name={entity._id + '_chrome' + tab.headerOrFooter}
       mode='handlebars'
       value={entity.chrome ? entity.chrome[tab.headerOrFooter] : ''}
-      onUpdate={(v) => onUpdate(Object.assign({}, entity, { chrome: Object.assign({}, entity.chrome, { [tab.headerOrFooter]: v }) }))}
+      onUpdate={(v) => onUpdate(Object.assign({}, entity, { chrome: Object.assign({}, entity.chrome, { [tab.headerOrFooter + 'Template']: v }) }))}
     />)
   }
 }

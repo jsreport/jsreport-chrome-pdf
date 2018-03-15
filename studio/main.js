@@ -147,6 +147,28 @@
 	  _createClass(Properties, [{
 	    key: 'openHeaderFooter',
 	    value: function openHeaderFooter(type) {
+	      if (_jsreportStudio2.default.getSettingValueByKey('chrome-header-informed', false) === true) {
+	        return;
+	      }
+	
+	      _jsreportStudio2.default.setSetting('chrome-header-informed', true);
+	
+	      _jsreportStudio2.default.openModal(function () {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          'Here you can define chrome native headers/footers. Make sure "display header/footer" is selected and use margin to prepare space for a header.',
+	          _react2.default.createElement('br', null),
+	          'Please not chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it. The chrome native implementation is also very limited and we recommend to use jsreport',
+	          _react2.default.createElement(
+	            'a',
+	            { href: 'https://jsreport.net/learn/pdf-utils', target: '_blank' },
+	            'pdf utils extension'
+	          ),
+	          ' in more complex use case.'
+	        );
+	      });
+	
 	      _jsreportStudio2.default.openTab({
 	        key: this.props.entity._id + 'chrome' + type,
 	        _id: this.props.entity._id,
@@ -185,20 +207,6 @@
 	            type: 'text', placeholder: '1', value: chrome.scale || '',
 	            onChange: function onChange(v) {
 	              return changeChrome({ scale: v.target.value });
-	            } })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'form-group' },
-	          _react2.default.createElement(
-	            'label',
-	            null,
-	            'display header/footer'
-	          ),
-	          _react2.default.createElement('input', {
-	            type: 'checkbox', checked: chrome.displayHeaderFooter === true,
-	            onChange: function onChange(v) {
-	              return changeChrome({ displayHeaderFooter: v.target.checked });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -347,6 +355,20 @@
 	          _react2.default.createElement(
 	            'label',
 	            null,
+	            'display header/footer'
+	          ),
+	          _react2.default.createElement('input', {
+	            type: 'checkbox', checked: chrome.displayHeaderFooter === true,
+	            onChange: function onChange(v) {
+	              return changeChrome({ displayHeaderFooter: v.target.checked });
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
+	          _react2.default.createElement(
+	            'label',
+	            null,
 	            'header'
 	          ),
 	          _react2.default.createElement(
@@ -485,7 +507,7 @@
 	        mode: 'handlebars',
 	        value: entity.chrome ? entity.chrome[tab.headerOrFooter] : '',
 	        onUpdate: function onUpdate(v) {
-	          return _onUpdate(Object.assign({}, entity, { chrome: Object.assign({}, entity.chrome, _defineProperty({}, tab.headerOrFooter, v)) }));
+	          return _onUpdate(Object.assign({}, entity, { chrome: Object.assign({}, entity.chrome, _defineProperty({}, tab.headerOrFooter + 'Template', v)) }));
 	        }
 	      });
 	    }

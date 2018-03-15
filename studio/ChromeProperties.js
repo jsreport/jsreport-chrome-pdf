@@ -4,6 +4,21 @@ import * as Constants from './constants.js'
 
 export default class Properties extends Component {
   openHeaderFooter (type) {
+    if (Studio.getSettingValueByKey('chrome-header-informed', false) === true) {
+      return
+    }
+
+    Studio.setSetting('chrome-header-informed', true)
+
+    Studio.openModal(() => <div>
+      Here you can define chrome native headers/footers.
+      Make sure "display header/footer" is selected and use margin to prepare space for a header.
+      <br />
+      Please not chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.
+      The chrome native implementation is also very limited and we recommend to use jsreport
+      <a href='https://jsreport.net/learn/pdf-utils' target='_blank'>pdf utils extension</a> in more complex use case.
+    </div>)
+
     Studio.openTab({
       key: this.props.entity._id + 'chrome' + type,
       _id: this.props.entity._id,
@@ -25,12 +40,6 @@ export default class Properties extends Component {
           <input
             type='text' placeholder='1' value={chrome.scale || ''}
             onChange={(v) => changeChrome({ scale: v.target.value })} />
-        </div>
-        <div className='form-group'>
-          <label>display header/footer</label>
-          <input
-            type='checkbox' checked={chrome.displayHeaderFooter === true}
-            onChange={(v) => changeChrome({ displayHeaderFooter: v.target.checked })} />
         </div>
         <div className='form-group'>
           <label>print background</label>
@@ -83,6 +92,12 @@ export default class Properties extends Component {
           <input
             type='text' placeholder='10cm' value={chrome.marginLeft || ''}
             onChange={(v) => changeChrome({ marginLeft: v.target.value })} />
+        </div>
+        <div className='form-group'>
+          <label>display header/footer</label>
+          <input
+            type='checkbox' checked={chrome.displayHeaderFooter === true}
+            onChange={(v) => changeChrome({ displayHeaderFooter: v.target.checked })} />
         </div>
         <div className='form-group'>
           <label>header</label>
