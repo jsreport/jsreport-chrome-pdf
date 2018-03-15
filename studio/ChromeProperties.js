@@ -3,7 +3,7 @@ import Studio from 'jsreport-studio'
 import * as Constants from './constants.js'
 
 export default class Properties extends Component {
-  openHeaderFooter (type) {
+  inform () {
     if (Studio.getSettingValueByKey('chrome-header-informed', false) === true) {
       return
     }
@@ -20,6 +20,10 @@ export default class Properties extends Component {
       <b>The chrome native implementation is also very limited and we recommend to use jsreport
       <a href='https://jsreport.net/learn/pdf-utils' target='_blank'>pdf utils extension</a> in more complex use case.</b>
     </div>)
+  }
+
+  openHeaderFooter (type) {
+    this.inform()
 
     Studio.openTab({
       key: this.props.entity._id + 'chrome' + type,

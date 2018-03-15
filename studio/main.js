@@ -145,8 +145,8 @@
 	  }
 	
 	  _createClass(Properties, [{
-	    key: 'openHeaderFooter',
-	    value: function openHeaderFooter(type) {
+	    key: 'inform',
+	    value: function inform() {
 	      if (_jsreportStudio2.default.getSettingValueByKey('chrome-header-informed', false) === true) {
 	        return;
 	      }
@@ -175,6 +175,11 @@
 	          )
 	        );
 	      });
+	    }
+	  }, {
+	    key: 'openHeaderFooter',
+	    value: function openHeaderFooter(type) {
+	      this.inform();
 	
 	      _jsreportStudio2.default.openTab({
 	        key: this.props.entity._id + 'chrome' + type,
