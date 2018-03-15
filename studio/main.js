@@ -157,9 +157,9 @@
 	        return _react2.default.createElement(
 	          'div',
 	          null,
-	          'Here you can define chrome native headers/footers. Make sure "display header/footer" is selected and use margin to prepare space for a header.',
+	          'Here you can define chrome native headers/footers. Make sure "display header/footer" is selected and use margin to prepare the space for the header.',
 	          _react2.default.createElement('br', null),
-	          'Please not chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.',
+	          'Please note chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.',
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
@@ -169,9 +169,9 @@
 	            _react2.default.createElement(
 	              'a',
 	              { href: 'https://jsreport.net/learn/pdf-utils', target: '_blank' },
-	              'pdf utils extension'
+	              ' pdf utils extension'
 	            ),
-	            ' in more complex use case.'
+	            ' in more complex use cases.'
 	          )
 	        );
 	      });

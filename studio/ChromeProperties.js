@@ -12,13 +12,13 @@ export default class Properties extends Component {
 
     Studio.openModal(() => <div>
       Here you can define chrome native headers/footers.
-      Make sure "display header/footer" is selected and use margin to prepare space for a header.
+      Make sure "display header/footer" is selected and use margin to prepare the space for the header.
       <br />
-      Please not chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.
+      Please note chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.
       <br />
       <br />
       <b>The chrome native implementation is also very limited and we recommend to use jsreport
-      <a href='https://jsreport.net/learn/pdf-utils' target='_blank'>pdf utils extension</a> in more complex use case.</b>
+      <a href='https://jsreport.net/learn/pdf-utils' target='_blank'> pdf utils extension</a> in more complex use cases.</b>
     </div>)
   }
 
