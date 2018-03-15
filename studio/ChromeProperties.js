@@ -15,8 +15,10 @@ export default class Properties extends Component {
       Make sure "display header/footer" is selected and use margin to prepare space for a header.
       <br />
       Please not chrome currently prints headers with smaller font size and you need to style text explicitly to workaround it.
-      The chrome native implementation is also very limited and we recommend to use jsreport
-      <a href='https://jsreport.net/learn/pdf-utils' target='_blank'>pdf utils extension</a> in more complex use case.
+      <br />
+      <br />
+      <b>The chrome native implementation is also very limited and we recommend to use jsreport
+      <a href='https://jsreport.net/learn/pdf-utils' target='_blank'>pdf utils extension</a> in more complex use case.</b>
     </div>)
 
     Studio.openTab({
