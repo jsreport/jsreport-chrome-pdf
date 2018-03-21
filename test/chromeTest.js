@@ -47,4 +47,34 @@ describe('chrome pdf', () => {
     const res = await reporter.render(request)
     JSON.stringify(res.meta.logs).should.match(/hello world/)
   })
+
+  it('should provide logs', async () => {
+    const request = {
+      template: { content: 'Heyx <script>console.log("hello world")</script>', recipe: 'chrome-pdf', engine: 'none' },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/hello world/)
+  })
+
+  it('should render headerTemplate', async () => {
+    const request = {
+      template: { content: 'content', recipe: 'chrome-pdf', engine: 'none', chrome: { headerTemplate: 'foo' } },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/Executing recipe html/)
+  })
+
+  it('should render footerTemplate', async () => {
+    const request = {
+      template: { content: 'content', recipe: 'chrome-pdf', engine: 'none', chrome: { footerTemplate: 'foo' } },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/Executing recipe html/)
+  })
 })
