@@ -25,7 +25,7 @@ describe('chrome pdf', () => {
       template: { content: 'Foo', recipe: 'chrome-pdf', engine: 'none' }
     }
 
-    const res = await reporter.render(request, {})
+    const res = await reporter.render(request)
     res.content.toString().should.containEql('%PDF')
   })
 
@@ -34,7 +34,7 @@ describe('chrome pdf', () => {
       template: { content: 'Heyx', recipe: 'chrome-pdf', engine: 'none', chrome: { header: 'Foo' } }
     }
 
-    const res = await reporter.render(request, {})
+    const res = await reporter.render(request)
     res.content.toString().should.containEql('%PDF')
   })
 
