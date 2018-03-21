@@ -77,4 +77,37 @@ describe('chrome pdf', () => {
     const res = await reporter.render(request)
     JSON.stringify(res.meta.logs).should.match(/Executing recipe html/)
   })
+
+  it('should exit on small timeout', async () => {
+    const request = {
+      template: { content: 'content', recipe: 'chrome-pdf', engine: 'none', chrome: { footerTemplate: 'foo' } },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/Executing recipe html/)
+  })
+})
+
+describe('chrome pdf with small timeout', () => {
+  let reporter
+
+  beforeEach(() => {
+    reporter = JsReport()
+    reporter.use(require('../')({
+      timeout: 1
+    }))
+
+    return reporter.init()
+  })
+
+  afterEach(() => reporter.close())
+
+  it('should reject', async () => {
+    const request = {
+      template: { content: 'content', recipe: 'chrome-pdf', engine: 'none' }
+    }
+
+    return reporter.render(request).should.be.rejected()
+  })
 })
