@@ -20,6 +20,8 @@ describe('chrome pdf', () => {
     return reporter.init()
   })
 
+  afterEach(() => reporter.close())
+
   it('should not fail when rendering', async () => {
     const request = {
       template: { content: 'Foo', recipe: 'chrome-pdf', engine: 'none' }
