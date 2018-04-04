@@ -20,6 +20,23 @@ To use `recipe` in for template rendering set `template.recipe=chrome-pdf` in th
 }
 ```
 
+To set chrome options inside chrome process add the following example script to your template:
+
+```js
+//example settings, all options are available     
+window.JSREPORT_CHROME_SETTINGS = {
+    marginTop:'3cm',
+    marginBottom:'3cm',
+    marginLeft: '3cm',
+    marginRight: '3cm',
+    landscape: true,
+    format: 'Legal'
+    
+}
+
+window.JSREPORT_READY_TO_START = true;
+```
+
 ## jsreport-core
 You can apply this extension also manually to [jsreport-core](https://github.com/jsreport/jsreport-core)
 
