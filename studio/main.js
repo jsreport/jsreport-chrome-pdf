@@ -138,13 +138,30 @@
 	var Properties = function (_Component) {
 	  _inherits(Properties, _Component);
 	
-	  function Properties() {
+	  function Properties(props) {
 	    _classCallCheck(this, Properties);
 	
-	    return _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
+	
+	    _this.applyDefaultsToEntity = _this.applyDefaultsToEntity.bind(_this);
+	    _this.changeChrome = _this.changeChrome.bind(_this);
+	    return _this;
 	  }
 	
 	  _createClass(Properties, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.applyDefaultsToEntity(this.props);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      // when component changes because another template is created
+	      if (this.props.entity._id !== nextProps.entity._id) {
+	        this.applyDefaultsToEntity(nextProps);
+	      }
+	    }
+	  }, {
 	    key: 'inform',
 	    value: function inform() {
 	      if (_jsreportStudio2.default.getSettingValueByKey('chrome-header-informed', false) === true) {
@@ -190,19 +207,43 @@
 	      });
 	    }
 	  }, {
+	    key: 'applyDefaultsToEntity',
+	    value: function applyDefaultsToEntity(props) {
+	      var entity = props.entity;
+	
+	      var entityNeedsDefault = false;
+	
+	      if (entity.__isNew || entity.chrome == null || entity.chrome.printBackground == null) {
+	        entityNeedsDefault = true;
+	      }
+	
+	      if (entityNeedsDefault) {
+	        this.changeHtmlToXlsx(props, {
+	          printBackground: true
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'changeChrome',
+	    value: function changeChrome(props, change) {
+	      var entity = props.entity,
+	          onChange = props.onChange;
+	
+	      var chrome = entity.chrome || {};
+	
+	      onChange(_extends({}, entity, {
+	        chrome: _extends({}, chrome, change)
+	      }));
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var _props = this.props,
-	          entity = _props.entity,
-	          onChange = _props.onChange;
+	      var entity = this.props.entity;
 	
 	      var chrome = entity.chrome || {};
-	
-	      var changeChrome = function changeChrome(change) {
-	        return onChange(_extends({}, entity, { chrome: _extends({}, entity.chrome, change) }));
-	      };
+	      var changeChrome = this.changeChrome;
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -218,7 +259,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '1', value: chrome.scale || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ scale: v.target.value });
+	              return changeChrome(_this2.props, { scale: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -232,7 +273,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'checkbox', checked: chrome.printBackground === true,
 	            onChange: function onChange(v) {
-	              return changeChrome({ printBackground: v.target.checked });
+	              return changeChrome(_this2.props, { printBackground: v.target.checked });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -246,7 +287,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'checkbox', checked: chrome.landscape === true,
 	            onChange: function onChange(v) {
-	              return changeChrome({ landscape: v.target.checked });
+	              return changeChrome(_this2.props, { landscape: v.target.checked });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -260,7 +301,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '1-5, 8, 11-13', value: chrome.pageRanges || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ pageRanges: v.target.value });
+	              return changeChrome(_this2.props, { pageRanges: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -274,7 +315,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: 'Letter', value: chrome.format || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ format: v.target.value });
+	              return changeChrome(_this2.props, { format: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -288,7 +329,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.width || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ width: v.target.value });
+	              return changeChrome(_this2.props, { width: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -302,7 +343,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.height || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ height: v.target.value });
+	              return changeChrome(_this2.props, { height: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -316,7 +357,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.marginTop || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ marginTop: v.target.value });
+	              return changeChrome(_this2.props, { marginTop: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -330,7 +371,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.marginRight || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ marginRight: v.target.value });
+	              return changeChrome(_this2.props, { marginRight: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -344,7 +385,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.marginBottom || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ marginBottom: v.target.value });
+	              return changeChrome(_this2.props, { marginBottom: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -358,7 +399,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'text', placeholder: '10cm', value: chrome.marginLeft || '',
 	            onChange: function onChange(v) {
-	              return changeChrome({ marginLeft: v.target.value });
+	              return changeChrome(_this2.props, { marginLeft: v.target.value });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -372,7 +413,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'checkbox', checked: chrome.displayHeaderFooter === true,
 	            onChange: function onChange(v) {
-	              return changeChrome({ displayHeaderFooter: v.target.checked });
+	              return changeChrome(_this2.props, { displayHeaderFooter: v.target.checked });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -418,7 +459,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'checkbox', checked: chrome.waitForNetworkIddle === true,
 	            onChange: function onChange(v) {
-	              return changeChrome({ waitForNetworkIddle: v.target.checked });
+	              return changeChrome(_this2.props, { waitForNetworkIddle: v.target.checked });
 	            } })
 	        ),
 	        _react2.default.createElement(
@@ -432,7 +473,7 @@
 	          _react2.default.createElement('input', {
 	            type: 'checkbox', title: 'window.JSREPORT_READY_TO_START=true;', checked: chrome.waitForJS === true,
 	            onChange: function onChange(v) {
-	              return changeChrome({ waitForJS: v.target.checked });
+	              return changeChrome(_this2.props, { waitForJS: v.target.checked });
 	            } })
 	        )
 	      );
