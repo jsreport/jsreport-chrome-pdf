@@ -218,7 +218,7 @@
 	      }
 	
 	      if (entityNeedsDefault) {
-	        this.changeHtmlToXlsx(props, {
+	        this.changeChrome(props, {
 	          printBackground: true
 	        });
 	      }

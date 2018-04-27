@@ -64,7 +64,7 @@ export default class Properties extends Component {
     }
 
     if (entityNeedsDefault) {
-      this.changeHtmlToXlsx(props, {
+      this.changeChrome(props, {
         printBackground: true
       })
     }
