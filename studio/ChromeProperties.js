@@ -57,7 +57,7 @@ export default class Properties extends Component {
     let entityNeedsDefault = false
 
     if (
-      entity.__isNew ||
+      entity.__isNew &&
       (entity.chrome == null || entity.chrome.printBackground == null)
     ) {
       entityNeedsDefault = true
