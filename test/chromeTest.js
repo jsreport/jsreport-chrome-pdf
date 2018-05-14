@@ -1,6 +1,7 @@
 process.env.debug = 'jsreport'
 const JsReport = require('jsreport-core')
 require('should')
+const parsePdf = require('parse-pdf')
 
 describe('chrome pdf', () => {
   let reporter
@@ -11,6 +12,9 @@ describe('chrome pdf', () => {
         strategy: 'in-process'
       }
     })
+
+    reporter.use(require('jsreport-handlebars')())
+
     reporter.use(require('../')({
       launchOptions: {
         args: ['--no-sandbox']
@@ -78,6 +82,24 @@ describe('chrome pdf', () => {
 
     const res = await reporter.render(request)
     JSON.stringify(res.meta.logs).should.match(/Executing recipe html/)
+  })
+
+  it('should render header/footer with helpers', async () => {
+    const request = {
+      template: {
+        content: 'content',
+        recipe: 'chrome-pdf',
+        engine: 'handlebars',
+        chrome: { displayHeaderFooter: true, headerTemplate: '{{sayHello}}-foo', footerTemplate: '{{sayHello}}-bar' },
+        helpers: `function sayHello () { return 'hello'  }`
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.containEql('hello-foo')
+    parsed.pages[0].text.should.containEql('hello-bar')
   })
 })
 
