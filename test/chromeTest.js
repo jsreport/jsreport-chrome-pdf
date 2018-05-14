@@ -90,16 +90,16 @@ describe('chrome pdf', () => {
         content: 'content',
         recipe: 'chrome-pdf',
         engine: 'handlebars',
-        chrome: { displayHeaderFooter: true, headerTemplate: '{{sayHello}}-foo', footerTemplate: '{{sayHello}}-bar' },
-        helpers: `function sayHello () { return 'hello'  }`
+        chrome: { displayHeaderFooter: true, marginTop: '80px', marginBottom: '80px', headerTemplate: '{{printNumber 1}}<br/>', footerTemplate: '{{printNumber 2}}<br/>' },
+        helpers: `function printNumber (num) { return num  }`
       }
     }
 
     const res = await reporter.render(request)
     const parsed = await parsePdf(res.content)
 
-    parsed.pages[0].text.should.containEql('hello-foo')
-    parsed.pages[0].text.should.containEql('hello-bar')
+    parsed.pages[0].text.should.containEql('1')
+    parsed.pages[0].text.should.containEql('2')
   })
 })
 
