@@ -101,6 +101,57 @@ describe('chrome pdf', () => {
     parsed.pages[0].text.should.containEql('1')
     parsed.pages[0].text.should.containEql('2')
   })
+
+  it('should default into media type print', async () => {
+    const request = {
+      template: {
+        content: '<style>@media only print{ span { display: none } }</style>text<span>screen</span>',
+        recipe: 'chrome-pdf',
+        engine: 'none'
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.not.containEql('screen')
+  })
+
+  it('should propagate media type screen', async () => {
+    const request = {
+      template: {
+        content: '<style>@media only screen{ span { display: none } }</style>text<span>print</span>',
+        recipe: 'chrome-pdf',
+        engine: 'none',
+        chrome: {
+          mediaType: 'screen'
+        }
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.not.containEql('print')
+  })
+
+  it('should propagate media type print', async () => {
+    const request = {
+      template: {
+        content: '<style>@media only print{ span { display: none } }</style>text<span>screen</span>',
+        recipe: 'chrome-pdf',
+        engine: 'none',
+        chrome: {
+          mediaType: 'print'
+        }
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.not.containEql('screen')
+  })
 })
 
 describe('chrome pdf with small timeout', () => {

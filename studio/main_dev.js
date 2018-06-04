@@ -20,7 +20,8 @@ Studio.addApiSpec({
       marginTop: '...',
       marginRight: '...',
       marginBottom: '...',
-      marginLeft: '...'
+      marginLeft: '...',
+      mediaType: 'print|screen'
     }
   }
 })

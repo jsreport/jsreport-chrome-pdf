@@ -158,6 +158,12 @@ export default class Properties extends Component {
           <label>footer</label>
           <button onClick={() => this.openHeaderFooter('footer')}>open in tab...</button>
         </div>
+        <div className='form-group'><label>media type</label>
+          <select value={chrome.mediaType || 'print'} onChange={(v) => changeChrome(this.props, { mediaType: v.target.value })}>
+            <option key='print' value='print'>print</option>
+            <option key='screen' value='screen'>screen</option>
+          </select>
+        </div>
         <div className='form-group'>
           <label>wait for network iddle</label>
           <input
