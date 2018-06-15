@@ -1,6 +1,6 @@
 {
   "name": "jsreport-chrome-pdf",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "jsreport recipe which is rendering pdf from html using headless chrome",
   "scripts": {
     "start": "jsreport-studio-start --httpPort 5488",
