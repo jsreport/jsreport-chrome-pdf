@@ -121,7 +121,7 @@ describe('chrome pdf', () => {
         engine: 'handlebars'
       },
       data: {
-        foo: 'foo'
+        foo: '1'
       }
     }
 
@@ -129,7 +129,7 @@ describe('chrome pdf', () => {
     const parsed = await parsePdf(res.content)
 
     parsed.pages[0].text.should.containEql('content')
-    parsed.pages[0].text.should.containEql('foo')
+    parsed.pages[0].text.should.containEql('1')
   })
 
   it('should avoid merging sensitive options from page\'s javascript', async () => {
@@ -152,7 +152,7 @@ describe('chrome pdf', () => {
         engine: 'handlebars'
       },
       data: {
-        foo: 'foo'
+        foo: '1'
       }
     }
 
@@ -163,7 +163,7 @@ describe('chrome pdf', () => {
 
     exists.should.be.False()
     parsed.pages[0].text.should.containEql('content')
-    parsed.pages[0].text.should.containEql('foo')
+    parsed.pages[0].text.should.containEql('1')
   })
 
   it('should default into media type print', async () => {
