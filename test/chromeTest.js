@@ -1,4 +1,6 @@
 process.env.debug = 'jsreport'
+const path = require('path')
+const fs = require('fs')
 const JsReport = require('jsreport-core')
 require('should')
 const parsePdf = require('parse-pdf')
@@ -100,6 +102,68 @@ describe('chrome pdf', () => {
 
     parsed.pages[0].text.should.containEql('1')
     parsed.pages[0].text.should.containEql('2')
+  })
+
+  it('should merge chrome options from page\'s javascript', async () => {
+    const request = {
+      template: {
+        content: `
+          content
+          <script>
+            window.JSREPORT_CHROME_PDF_OPTIONS = {
+              displayHeaderFooter: true,
+              marginTop: '80px',
+              headerTemplate: '{{foo}}'
+            }
+          </script>
+        `,
+        recipe: 'chrome-pdf',
+        engine: 'handlebars'
+      },
+      data: {
+        foo: 'foo'
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.containEql('content')
+    parsed.pages[0].text.should.containEql('foo')
+  })
+
+  it('should avoid merging sensitive options from page\'s javascript', async () => {
+    const distPath = path.join(__dirname, '../testReport.pdf')
+
+    const request = {
+      template: {
+        content: `
+          content
+          <script>
+            window.JSREPORT_CHROME_PDF_OPTIONS = {
+              path: '${distPath}',
+              displayHeaderFooter: true,
+              marginTop: '80px',
+              headerTemplate: '{{foo}}'
+            }
+          </script>
+        `,
+        recipe: 'chrome-pdf',
+        engine: 'handlebars'
+      },
+      data: {
+        foo: 'foo'
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    const exists = fs.existsSync(distPath)
+
+    exists.should.be.False()
+    parsed.pages[0].text.should.containEql('content')
+    parsed.pages[0].text.should.containEql('foo')
   })
 
   it('should default into media type print', async () => {
