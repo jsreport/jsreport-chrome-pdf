@@ -240,3 +240,31 @@ describe('chrome pdf with small timeout', () => {
     return reporter.render(request).should.be.rejected()
   })
 })
+
+describe('chrome crashing', () => {
+  let reporter
+  let originalUrlFormat
+
+  beforeEach(async () => {
+    reporter = JsReport()
+    reporter.use(require('../')())
+
+    originalUrlFormat = require('url').format
+    return reporter.init()
+  })
+
+  afterEach(() => {
+    require('url').format = originalUrlFormat
+    return reporter.close()
+  })
+
+  it('should reject with proper message', async () => {
+    require('url').format = () => 'chrome://crash'
+
+    const request = {
+      template: { content: 'content', recipe: 'chrome-pdf', engine: 'none' }
+    }
+
+    return reporter.render(request).should.be.rejectedWith(/Page crashed/)
+  })
+})
