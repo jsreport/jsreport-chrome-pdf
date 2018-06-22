@@ -258,13 +258,12 @@ describe('chrome crashing', () => {
     return reporter.close()
   })
 
-  it('should reject with proper message', async () => {
+  it('should handle page.on(error) and reject', (done) => {
     require('url').format = () => 'chrome://crash'
+    process.on('unhandledRejection', () => done(new Error('Rejection should be handled!')))
 
-    const request = {
+    reporter.render({
       template: { content: 'content', recipe: 'chrome-pdf', engine: 'none' }
-    }
-
-    return reporter.render(request).should.be.rejectedWith(/Page crashed/)
+    }).catch(() => done())
   })
 })
