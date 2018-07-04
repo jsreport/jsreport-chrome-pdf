@@ -94,7 +94,15 @@ export default class Properties extends Component {
         <div className='form-group'><label>scale</label>
           <input
             type='text' placeholder='1' value={chrome.scale || ''}
-            onChange={(v) => changeChrome(this.props, { scale: v.target.value })} />
+            onChange={(v) => {
+              let scaleValue = v.target.value
+
+              if (scaleValue.trim() === '') {
+                scaleValue = null
+              }
+
+              changeChrome(this.props, { scale: scaleValue })
+            }} />
         </div>
         <div className='form-group'>
           <label>print background</label>
