@@ -10,7 +10,7 @@ describe('chrome pdf', () => {
 
   beforeEach(() => {
     reporter = JsReport({
-      tasks: {
+      templatingEngines: {
         strategy: 'in-process'
       }
     })
