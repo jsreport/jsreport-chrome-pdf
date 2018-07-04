@@ -26,7 +26,11 @@ describe('chrome pdf', () => {
     return reporter.init()
   })
 
-  afterEach(() => reporter.close())
+  afterEach(async () => {
+    if (reporter) {
+      await reporter.close()
+    }
+  })
 
   it('should not fail when rendering', async () => {
     const request = {
@@ -102,6 +106,24 @@ describe('chrome pdf', () => {
 
     parsed.pages[0].text.should.containEql('1')
     parsed.pages[0].text.should.containEql('2')
+  })
+
+  it('should work with scale option', async () => {
+    const request = {
+      template: {
+        content: 'content',
+        recipe: 'chrome-pdf',
+        engine: 'handlebars',
+        chrome: {
+          scale: '2.0'
+        }
+      }
+    }
+
+    const res = await reporter.render(request)
+    const parsed = await parsePdf(res.content)
+
+    parsed.pages[0].text.should.containEql('content')
   })
 
   it('should merge chrome options from page\'s javascript', async () => {
@@ -253,9 +275,12 @@ describe('chrome crashing', () => {
     return reporter.init()
   })
 
-  afterEach(() => {
+  afterEach(async () => {
     require('url').format = originalUrlFormat
-    return reporter.close()
+
+    if (reporter) {
+      await reporter.close()
+    }
   })
 
   it('should handle page.on(error) and reject', (done) => {
