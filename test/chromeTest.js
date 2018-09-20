@@ -6,6 +6,32 @@ require('should')
 const parsePdf = require('parse-pdf')
 
 describe('chrome pdf', () => {
+  describe('dedicated-process strategy', () => {
+    common('dedicated-process')
+
+    describe('chrome pdf with small timeout', () => {
+      commonTimeout('dedicated-process')
+    })
+
+    describe('chrome crashing', () => {
+      commonCrashing('dedicated-process')
+    })
+  })
+
+  describe('chrome-pool strategy', () => {
+    common('chrome-pool')
+
+    describe('chrome pdf with small timeout', () => {
+      commonTimeout('chrome-pool')
+    })
+
+    describe('chrome crashing', () => {
+      commonCrashing('chrome-pool')
+    })
+  })
+})
+
+function common (strategy) {
   let reporter
 
   beforeEach(() => {
@@ -18,6 +44,8 @@ describe('chrome pdf', () => {
     reporter.use(require('jsreport-handlebars')())
 
     reporter.use(require('../')({
+      strategy,
+      numberOfWorkers: 2,
       launchOptions: {
         args: ['--no-sandbox']
       }
@@ -39,6 +67,22 @@ describe('chrome pdf', () => {
 
     const res = await reporter.render(request)
     res.content.toString().should.containEql('%PDF')
+  })
+
+  it('not fail when rendering multiple times', async () => {
+    const request = {
+      template: { content: 'Foo', recipe: 'chrome-pdf', engine: 'none' }
+    }
+
+    const op = []
+
+    op.push(reporter.render(request))
+    op.push(reporter.render(request))
+    op.push(reporter.render(request))
+    op.push(reporter.render(request))
+    op.push(reporter.render(request))
+
+    await Promise.all(op)
   })
 
   it('should not fail when rendering header', async () => {
@@ -238,14 +282,18 @@ describe('chrome pdf', () => {
 
     parsed.pages[0].text.should.not.containEql('screen')
   })
-})
+}
 
-describe('chrome pdf with small timeout', () => {
+function commonTimeout (strategy) {
   let reporter
 
   beforeEach(() => {
     reporter = JsReport()
     reporter.use(require('../')({
+      strategy,
+      launchOptions: {
+        args: ['--no-sandbox']
+      },
       timeout: 1
     }))
 
@@ -261,15 +309,20 @@ describe('chrome pdf with small timeout', () => {
 
     return reporter.render(request).should.be.rejected()
   })
-})
+}
 
-describe('chrome crashing', () => {
+function commonCrashing (strategy) {
   let reporter
   let originalUrlFormat
 
   beforeEach(async () => {
     reporter = JsReport()
-    reporter.use(require('../')())
+    reporter.use(require('../')({
+      strategy,
+      launchOptions: {
+        args: ['--no-sandbox']
+      }
+    }))
 
     originalUrlFormat = require('url').format
     return reporter.init()
@@ -291,4 +344,4 @@ describe('chrome crashing', () => {
       template: { content: 'content', recipe: 'chrome-pdf', engine: 'none' }
     }).catch(() => done())
   })
-})
+}
