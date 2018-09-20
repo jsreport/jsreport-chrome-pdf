@@ -2,7 +2,7 @@
 const chromeSchema = {
   type: 'object',
   properties: {
-    strategy: { type: 'string', default: 'dedicated-process' },
+    strategy: { type: 'string', defaultNotInitialized: 'dedicated-process' },
     numberOfWorkers: { type: 'number', defaultNotInitialized: '<The number of CPU cores in the machine>' },
     timeout: { type: 'number' },
     launchOptions: {
