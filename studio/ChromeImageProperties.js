@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import Studio from 'jsreport-studio'
-import * as Constants from './constants.js'
 
 export default class ImageProperties extends Component {
   constructor (props) {
