@@ -29,6 +29,18 @@ describe('chrome pdf', () => {
       commonCrashing('chrome-pool')
     })
   })
+
+  describe('chrome-page-pool strategy', () => {
+    common('chrome-page-pool')
+
+    describe('chrome pdf with small timeout', () => {
+      commonTimeout('chrome-page-pool')
+    })
+
+    describe('chrome crashing', () => {
+      commonCrashing('chrome-page-pool')
+    })
+  })
 })
 
 describe('chrome image', () => {
@@ -53,6 +65,18 @@ describe('chrome image', () => {
 
     describe('chrome crashing', () => {
       commonCrashing('chrome-pool', true)
+    })
+  })
+
+  describe('chrome-page-pool strategy', () => {
+    common('chrome-page-pool', true)
+
+    describe('chrome pdf with small timeout', () => {
+      commonTimeout('chrome-page-pool', true)
+    })
+
+    describe('chrome crashing', () => {
+      commonCrashing('chrome-page-pool', true)
     })
   })
 })
