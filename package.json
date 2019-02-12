@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "node.extend.without.arrays": "1.1.5",
+    "node.extend.without.arrays": "1.1.6",
     "uuid": "3.3.2"
   },
   "author": "Jan Blaha",
@@ -45,7 +45,7 @@
     "eslint-config-standard-jsx": "5.0.0",
     "eslint-plugin-babel": "5.1.0",
     "in-publish": "2.0.0",
-    "jsreport-core": "2.3.0",
+    "jsreport-core": "2.3.3",
     "jsreport-debug": "2.0.2",
     "jsreport-handlebars": "2.0.0",
     "jsreport-studio-dev": "1.3.2",
