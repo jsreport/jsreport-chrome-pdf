@@ -330,6 +330,27 @@ function common (strategy, imageExecution) {
       parsed.pages[0].text.should.not.containEql('screen')
     })
   }
+
+  it('should render using url', async () => {
+    const request = {
+      template: {
+        content: ' ',
+        engine: 'none',
+        recipe,
+        chrome: {
+          url: 'https://jsreport.net'
+        }
+      }
+    }
+
+    const res = await reporter.render(request)
+
+    if (!imageExecution) {
+      res.content.toString().should.containEql('%PDF')
+    } else {
+      res.meta.contentType.startsWith('image').should.be.True()
+    }
+  })
 }
 
 function commonTimeout (strategy, imageExecution) {
