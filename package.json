@@ -37,6 +37,9 @@
   "dependencies": {
     "node.extend.without.arrays": "1.1.6"
   },
+  "peerDependencies": {
+    "puppeteer": "1.x.x"
+  },
   "author": "Jan Blaha",
   "devDependencies": {
     "babel-eslint": "10.0.1",
