@@ -194,6 +194,28 @@ function common (strategy, imageExecution) {
     JSON.stringify(res.meta.logs).should.match(/hello world/)
   })
 
+  it('should provide logs when script error', async () => {
+    const request = {
+      template: { content: 'Heyx <script>throw new Error("intentional script error")</script>', recipe, engine: 'none' },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.match(/intentional script error/)
+  })
+
+  it('should provide logs about http resources', async () => {
+    const request = {
+      template: { content: 'Hey <img src="https://jsreport.net/img/js-logo.png" />', recipe, engine: 'none' },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+
+    JSON.stringify(res.meta.logs).should.match(/Page request: GET \(image\)/)
+    JSON.stringify(res.meta.logs).should.match(/Page request finished: GET \(image\) 200/)
+  })
+
   it('should merge chrome options from page\'s javascript', async () => {
     const request = {
       template: {
