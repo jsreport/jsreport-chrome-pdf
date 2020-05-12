@@ -2,7 +2,7 @@ process.env.debug = 'jsreport'
 const path = require('path')
 const fs = require('fs')
 const JsReport = require('jsreport-core')
-require('should')
+const should = require('should')
 const parsePdf = require('parse-pdf')
 
 describe('chrome pdf', () => {
@@ -214,6 +214,30 @@ function common (strategy, imageExecution) {
 
     JSON.stringify(res.meta.logs).should.match(/Page request: GET \(image\)/)
     JSON.stringify(res.meta.logs).should.match(/Page request finished: GET \(image\) 200/)
+  })
+
+  it('should trim logs for longs base64 encoded images', async () => {
+    let img = 'start'
+
+    for (let i = 0; i < 40000; i++) {
+      img += 'fooooooooo'
+    }
+
+    const request = {
+      template: {
+        content: `<img src="data:image/png;base64,${img}" />`,
+        recipe,
+        engine: 'none'
+      },
+      options: { debug: { logsToResponseHeader: true } }
+    }
+
+    const res = await reporter.render(request)
+
+    const log = res.meta.logs.find((item) => item.message.startsWith('Page request: GET (image) data:image/png;base64,start'))
+
+    should(log).be.not.undefined()
+    log.message.endsWith('...').should.be.eql(true)
   })
 
   it('should merge chrome options from page\'s javascript', async () => {
