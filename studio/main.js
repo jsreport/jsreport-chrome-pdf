@@ -136,7 +136,7 @@ var _constants = __webpack_require__(2);
 
 var Constants = _interopRequireWildcard(_constants);
 
-var _ChromeTitle = __webpack_require__(7);
+var _ChromeTitle = __webpack_require__(8);
 
 var _ChromeTitle2 = _interopRequireDefault(_ChromeTitle);
 
@@ -907,6 +907,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _propTypes = __webpack_require__(7);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
@@ -959,13 +963,19 @@ exports.default = ChromeEditor;
 
 
 ChromeEditor.propTypes = {
-  entity: _react2.default.PropTypes.object.isRequired,
-  tab: _react2.default.PropTypes.object.isRequired,
-  onUpdate: _react2.default.PropTypes.func.isRequired
+  entity: _propTypes2.default.object.isRequired,
+  tab: _propTypes2.default.object.isRequired,
+  onUpdate: _propTypes2.default.func.isRequired
 };
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+module.exports = Studio.libraries['prop-types'];
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

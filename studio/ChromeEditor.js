@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { TextEditor } from 'jsreport-studio'
 
@@ -15,7 +16,7 @@ export default class ChromeEditor extends Component {
 }
 
 ChromeEditor.propTypes = {
-  entity: React.PropTypes.object.isRequired,
-  tab: React.PropTypes.object.isRequired,
-  onUpdate: React.PropTypes.func.isRequired
+  entity: PropTypes.object.isRequired,
+  tab: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired
 }
