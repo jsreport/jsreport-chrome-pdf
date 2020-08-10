@@ -116,9 +116,9 @@ var CHROME_TAB_EDITOR = exports.CHROME_TAB_EDITOR = 'CHROME_TAB_EDITOR';
 "use strict";
 
 
-var _ChromeProperties = __webpack_require__(4);
+var _ChromePdfProperties = __webpack_require__(4);
 
-var _ChromeProperties2 = _interopRequireDefault(_ChromeProperties);
+var _ChromePdfProperties2 = _interopRequireDefault(_ChromePdfProperties);
 
 var _ChromeImageProperties = __webpack_require__(5);
 
@@ -144,7 +144,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_jsreportStudio2.default.addPropertiesComponent('chrome pdf', _ChromeProperties2.default, function (entity) {
+_jsreportStudio2.default.addPropertiesComponent('chrome pdf', _ChromePdfProperties2.default, function (entity) {
   return entity.__entitySet === 'templates' && entity.recipe === 'chrome-pdf';
 });
 _jsreportStudio2.default.addPropertiesComponent('chrome image', _ChromeImageProperties2.default, function (entity) {
@@ -228,30 +228,29 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Properties = function (_Component) {
-  _inherits(Properties, _Component);
+var ChromePdfProperties = function (_Component) {
+  _inherits(ChromePdfProperties, _Component);
 
-  function Properties(props) {
-    _classCallCheck(this, Properties);
+  function ChromePdfProperties(props) {
+    _classCallCheck(this, ChromePdfProperties);
 
-    var _this = _possibleConstructorReturn(this, (Properties.__proto__ || Object.getPrototypeOf(Properties)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ChromePdfProperties.__proto__ || Object.getPrototypeOf(ChromePdfProperties)).call(this, props));
 
     _this.applyDefaultsToEntity = _this.applyDefaultsToEntity.bind(_this);
     _this.changeChrome = _this.changeChrome.bind(_this);
     return _this;
   }
 
-  _createClass(Properties, [{
+  _createClass(ChromePdfProperties, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.applyDefaultsToEntity(this.props);
     }
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      // when component changes because another template is created
-      if (this.props.entity._id !== nextProps.entity._id) {
-        this.applyDefaultsToEntity(nextProps);
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevProps.entity._id !== this.props.entity._id) {
+        this.applyDefaultsToEntity(this.props);
       }
     }
   }, {
@@ -604,10 +603,10 @@ var Properties = function (_Component) {
     }
   }]);
 
-  return Properties;
+  return ChromePdfProperties;
 }(_react.Component);
 
-exports.default = Properties;
+exports.default = ChromePdfProperties;
 
 /***/ }),
 /* 5 */

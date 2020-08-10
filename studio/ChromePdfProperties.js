@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import * as Constants from './constants.js'
 
-export default class Properties extends Component {
+class ChromePdfProperties extends Component {
   constructor (props) {
     super(props)
 
@@ -14,10 +14,9 @@ export default class Properties extends Component {
     this.applyDefaultsToEntity(this.props)
   }
 
-  componentWillReceiveProps (nextProps) {
-    // when component changes because another template is created
-    if (this.props.entity._id !== nextProps.entity._id) {
-      this.applyDefaultsToEntity(nextProps)
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.entity._id !== this.props.entity._id) {
+      this.applyDefaultsToEntity(this.props)
     }
   }
 
@@ -192,3 +191,5 @@ export default class Properties extends Component {
     )
   }
 }
+
+export default ChromePdfProperties

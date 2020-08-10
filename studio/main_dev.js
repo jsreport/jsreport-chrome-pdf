@@ -1,11 +1,11 @@
-import Properties from './ChromeProperties.js'
+import PdfProperties from './ChromePdfProperties.js'
 import ImageProperties from './ChromeImageProperties.js'
 import Studio from 'jsreport-studio'
 import ChromeEditor from './ChromeEditor.js'
 import * as Constants from './constants.js'
 import ChromeTitle from './ChromeTitle.js'
 
-Studio.addPropertiesComponent('chrome pdf', Properties, (entity) => entity.__entitySet === 'templates' && entity.recipe === 'chrome-pdf')
+Studio.addPropertiesComponent('chrome pdf', PdfProperties, (entity) => entity.__entitySet === 'templates' && entity.recipe === 'chrome-pdf')
 Studio.addPropertiesComponent('chrome image', ImageProperties, (entity) => entity.__entitySet === 'templates' && entity.recipe === 'chrome-image')
 
 Studio.addApiSpec({
