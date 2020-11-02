@@ -8,6 +8,7 @@ const parsePdf = require('parse-pdf')
 describe('chrome pdf', () => {
   describe('dedicated-process strategy', () => {
     common('dedicated-process')
+    commonLocalFilesAllowed('dedicated-process', false)
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('dedicated-process')
@@ -20,6 +21,7 @@ describe('chrome pdf', () => {
 
   describe('chrome-pool strategy', () => {
     common('chrome-pool')
+    commonLocalFilesAllowed('chrome-pool', false)
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('chrome-pool')
@@ -34,6 +36,7 @@ describe('chrome pdf', () => {
 describe('chrome image', () => {
   describe('dedicated-process strategy', () => {
     common('dedicated-process', true)
+    commonLocalFilesAllowed('dedicated-process', true)
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('dedicated-process', true)
@@ -46,6 +49,7 @@ describe('chrome image', () => {
 
   describe('chrome-pool strategy', () => {
     common('chrome-pool', true)
+    commonLocalFilesAllowed('chrome-pool', true)
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('chrome-pool', true)
@@ -85,6 +89,40 @@ function common (strategy, imageExecution) {
     if (reporter) {
       await reporter.close()
     }
+  })
+
+  it('should block file requests', async () => {
+    const request = {
+      template: {
+        content: `          
+          <script>
+            document.write(window.location='${__filename.replace(/\\/g, '/')}')             
+          </script>
+          `,
+        recipe,
+        engine: 'none'
+      }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.containEql('ERR_ACCESS_DENIED')
+  })
+
+  it('should block file requests with file protocl', async () => {
+    const request = {
+      template: {
+        content: `          
+          <script>
+            document.write(window.location='file:///${__filename.replace(/\\/g, '/')}')             
+          </script>
+          `,
+        recipe,
+        engine: 'none'
+      }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.containEql('ERR_ACCESS_DENIED')
   })
 
   it('should not fail when rendering', async () => {
@@ -429,7 +467,7 @@ function commonTimeout (strategy, imageExecution) {
 
 function commonCrashing (strategy, imageExecution) {
   let reporter
-  let originalUrlFormat
+  let originalPathToFileURL
   const recipe = imageExecution ? 'chrome-image' : 'chrome-pdf'
 
   beforeEach(async () => {
@@ -441,12 +479,12 @@ function commonCrashing (strategy, imageExecution) {
       }
     }))
 
-    originalUrlFormat = require('url').format
+    originalPathToFileURL = require('url').pathToFileURL
     return reporter.init()
   })
 
   afterEach(async () => {
-    require('url').format = originalUrlFormat
+    require('url').pathToFileURL = originalPathToFileURL
 
     if (reporter) {
       await reporter.close()
@@ -454,11 +492,70 @@ function commonCrashing (strategy, imageExecution) {
   })
 
   it('should handle page.on(error) and reject', (done) => {
-    require('url').format = () => 'chrome://crash'
+    require('url').pathToFileURL = () => ({ href: 'chrome://crash' })
     process.on('unhandledRejection', () => done(new Error('Rejection should be handled!')))
 
     reporter.render({
       template: { content: 'content', recipe, engine: 'none' }
     }).catch(() => done())
+  })
+}
+
+function commonLocalFilesAllowed (strategy, imageExecution) {
+  let reporter
+  const recipe = imageExecution ? 'chrome-image' : 'chrome-pdf'
+
+  beforeEach(async () => {
+    reporter = JsReport({
+      allowLocalFilesAccess: true
+    })
+    reporter.use(require('../')({
+      strategy,
+      launchOptions: {
+        args: ['--no-sandbox']
+      }
+    }))
+
+    return reporter.init()
+  })
+
+  afterEach(async () => {
+    if (reporter) {
+      await reporter.close()
+    }
+  })
+
+  it('should allow access to local files when allowLocalFilesAccess', async () => {
+    const request = {
+      template: {
+        content: `
+          <script>
+            document.write(window.location='${__filename.replace(/\\/g, '/')}')
+          </script>
+          `,
+        recipe,
+        engine: 'none'
+      }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.not.containEql('ERR_ACCESS_DENIED')
+  })
+
+  it('should allow access to local files with file protocol when allowLocalFilesAccess', async () => {
+    const request = {
+      template: {
+        content: `
+          <script>
+            document.write(window.location='file:///${__filename.replace(/\\/g, '/')}')
+          </script>
+          `,
+        recipe,
+        engine: 'none'
+      }
+    }
+
+    const res = await reporter.render(request)
+    JSON.stringify(res.meta.logs).should.not.containEql('ERR_ACCESS_DENIED')
   })
 }

@@ -2,6 +2,7 @@
 const chromeSchema = {
   type: 'object',
   properties: {
+    allowLocalFilesAccess: { type: 'boolean' },
     strategy: { type: 'string', defaultNotInitialized: 'dedicated-process' },
     numberOfWorkers: { type: 'number', defaultNotInitialized: '<The number of CPU cores in the machine>' },
     timeout: { type: 'number' },
