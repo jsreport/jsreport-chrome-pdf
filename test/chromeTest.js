@@ -13,10 +13,6 @@ describe('chrome pdf', () => {
     describe('chrome pdf with small timeout', () => {
       commonTimeout('dedicated-process')
     })
-
-    describe('chrome crashing', () => {
-      commonCrashing('dedicated-process')
-    })
   })
 
   describe('chrome-pool strategy', () => {
@@ -25,10 +21,6 @@ describe('chrome pdf', () => {
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('chrome-pool')
-    })
-
-    describe('chrome crashing', () => {
-      commonCrashing('chrome-pool')
     })
   })
 })
@@ -41,10 +33,6 @@ describe('chrome image', () => {
     describe('chrome pdf with small timeout', () => {
       commonTimeout('dedicated-process', true)
     })
-
-    describe('chrome crashing', () => {
-      commonCrashing('dedicated-process', true)
-    })
   })
 
   describe('chrome-pool strategy', () => {
@@ -53,10 +41,6 @@ describe('chrome image', () => {
 
     describe('chrome pdf with small timeout', () => {
       commonTimeout('chrome-pool', true)
-    })
-
-    describe('chrome crashing', () => {
-      commonCrashing('chrome-pool', true)
     })
   })
 })
@@ -435,6 +419,18 @@ function common (strategy, imageExecution) {
       res.meta.contentType.startsWith('image').should.be.True()
     }
   })
+
+  it('should handle page.on(error) and reject', (done) => {
+    process.on('unhandledRejection', () => done(new Error('Rejection should be handled!')))
+
+    reporter.render({
+      template: {
+        content: 'content',
+        recipe,
+        [imageExecution ? 'chromeImage' : 'chrome']: { url: 'chrome://crash' },
+        engine: 'none' }
+    }).catch(() => done())
+  })
 }
 
 function commonTimeout (strategy, imageExecution) {
@@ -462,42 +458,6 @@ function commonTimeout (strategy, imageExecution) {
     }
 
     return reporter.render(request).should.be.rejected()
-  })
-}
-
-function commonCrashing (strategy, imageExecution) {
-  let reporter
-  let originalPathToFileURL
-  const recipe = imageExecution ? 'chrome-image' : 'chrome-pdf'
-
-  beforeEach(async () => {
-    reporter = JsReport()
-    reporter.use(require('../')({
-      strategy,
-      launchOptions: {
-        args: ['--no-sandbox']
-      }
-    }))
-
-    originalPathToFileURL = require('url').pathToFileURL
-    return reporter.init()
-  })
-
-  afterEach(async () => {
-    require('url').pathToFileURL = originalPathToFileURL
-
-    if (reporter) {
-      await reporter.close()
-    }
-  })
-
-  it('should handle page.on(error) and reject', (done) => {
-    require('url').pathToFileURL = () => ({ href: 'chrome://crash' })
-    process.on('unhandledRejection', () => done(new Error('Rejection should be handled!')))
-
-    reporter.render({
-      template: { content: 'content', recipe, engine: 'none' }
-    }).catch(() => done())
   })
 }
 
